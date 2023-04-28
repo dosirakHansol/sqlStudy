@@ -132,3 +132,58 @@ FROM
 ) 
 WHERE 1=1
     AND ROWNUM = 1
+    
+/*
+    테이블에서 2021년에 가입한 회원 중 나이가 20세 이상 29세 이하인 회원이 몇 명인지 출력하는 SQL문을 작성해주세요.
+*/
+SELECT
+    COUNT(*)
+FROM
+    USER_INFO
+WHERE 1=1
+    AND AGE >= 20
+    AND AGE <= 29
+    AND TO_CHAR(JOINED, 'YYYY') = '2021'
+    
+/*
+    FOOD_PRODUCT 테이블에서 가격이 제일 비싼 식품의 
+    식품 ID, 식품 이름, 식품 코드, 식품분류, 식품 가격을 조회하는 SQL문을 작성해주세요.
+*/
+SELECT
+    PRODUCT_ID
+    , PRODUCT_NAME
+    , PRODUCT_CD
+    , CATEGORY
+    , PRICE
+FROM
+(
+    SELECT
+        PRODUCT_ID
+        , PRODUCT_NAME
+        , PRODUCT_CD
+        , CATEGORY
+        , PRICE
+    FROM
+        FOOD_PRODUCT
+    ORDER BY
+        PRICE DESC
+) 
+WHERE 1=1
+    AND ROWNUM = 1
+    
+/*
+    가장 최근에 들어온 동물은 언제 들어왔는지 조회하는 SQL 문을 작성해주세요.
+*/
+SELECT
+    DATETIME
+FROM
+(
+    SELECT
+        *
+    FROM
+        ANIMAL_INS
+    ORDER BY
+        DATETIME DESC
+)
+WHERE 1=1
+    AND ROWNUM = 1
