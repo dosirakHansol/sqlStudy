@@ -187,3 +187,51 @@ FROM
 )
 WHERE 1=1
     AND ROWNUM = 1
+    
+/*
+    BOOK 테이블에서 2021년에 출판된 '인문' 카테고리에 속하는 도서 리스트를 찾아서 
+    도서 ID(BOOK_ID), 출판일 (PUBLISHED_DATE)을 출력하는 SQL문을 작성해주세요.
+    결과는 출판일을 기준으로 오름차순 정렬해주세요.
+*/
+SELECT
+    BOOK_ID
+    , TO_CHAR(PUBLISHED_DATE, 'YYYY-MM-DD')
+FROM
+    BOOK
+WHERE 1=1
+    AND CATEGORY = '인문'
+    AND TO_CHAR(PUBLISHED_DATE, 'YYYY') = '2021'
+ORDER BY
+    PUBLISHED_DATE ASC
+    
+/*
+    REST_INFO와 REST_REVIEW 테이블에서 
+    서울에 위치한 식당들의 
+    식당 ID, 식당 이름, 음식 종류, 즐겨찾기수, 주소, 리뷰 평균 점수를 조회하는 SQL문을 작성해주세요. 
+    이때 리뷰 평균점수는 소수점 세 번째 자리에서 반올림 해주시고 
+    결과는 평균점수를 기준으로 내림차순 정렬해주시고, 
+    평균점수가 같다면 즐겨찾기수를 기준으로 내림차순 정렬해주세요.
+*/
+
+SELECT
+    REST_INFO.REST_ID
+    , REST_INFO.REST_NAME
+    , REST_INFO.FOOD_TYPE
+    , REST_INFO.FAVORITES
+    , REST_INFO.ADDRESS
+    , ROUND(AVG(REST_REVIEW.REVIEW_SCORE), 2) AS SCORE
+FROM REST_INFO 
+    INNER JOIN REST_REVIEW 
+        ON REST_REVIEW.REST_ID = REST_INFO.REST_ID
+WHERE 1=1
+    AND ADDRESS LIKE '%서울%'
+GROUP BY
+    REST_INFO.REST_ID
+    , REST_INFO.REST_NAME
+    , REST_INFO.FOOD_TYPE
+    , REST_INFO.FAVORITES
+    , REST_INFO.ADDRESS
+ORDER BY
+    SCORE DESC
+    , FAVORITES DESC
+;
