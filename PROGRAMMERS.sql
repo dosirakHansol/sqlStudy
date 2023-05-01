@@ -270,3 +270,56 @@ LEFT JOIN ICECREAM_INFO
 WHERE 1=1
     AND FIRST_HALF.TOTAL_ORDER >= 3000
     AND ICECREAM_INFO.INGREDIENT_TYPE = 'fruit_based'
+    
+/*
+    USED_GOODS_BOARD와 USED_GOODS_REPLY 테이블에서 2022년 10월에 작성된 
+    게시글 제목, 게시글 ID, 댓글 ID, 댓글 작성자 ID, 댓글 내용, 댓글 작성일을 조회하는 SQL문을 작성해주세요. 
+    결과는 댓글 작성일을 기준으로 오름차순 정렬해주시고, 
+    댓글 작성일이 같다면 게시글 제목을 기준으로 오름차순 정렬해주세요
+*/
+SELECT
+    B.TITLE
+    ,B.BOARD_ID
+    ,R.REPLY_ID
+    ,R.WRITER_ID
+    ,R.CONTENTS
+    ,TO_CHAR(R.CREATED_DATE,'YYYY-MM-DD') CREATED_DATE
+FROM USED_GOODS_BOARD B
+    INNER JOIN USED_GOODS_REPLY R
+        ON R.BOARD_ID = B.BOARD_ID
+WHERE 1=1
+    AND TO_CHAR(B.CREATED_DATE, 'YYYY-MM') = '2022-10'
+ORDER BY
+    R.CREATED_DATE ASC
+    , B.TITLE ASC
+    
+/*
+    FOOD_FACTORY 테이블에서 강원도에 위치한 식품공장의 
+    공장 ID, 공장 이름, 주소를 조회하는 SQL문을 작성해주세요. 
+    이때 결과는 공장 ID를 기준으로 오름차순 정렬해주세요.
+*/
+SELECT
+    FACTORY_ID
+    ,FACTORY_NAME
+    ,ADDRESS
+FROM FOOD_FACTORY
+WHERE 1=1
+    AND ADDRESS LIKE '%강원도%'
+ORDER BY FACTORY_ID ASC
+
+/*
+    DOCTOR 테이블에서 진료과가 흉부외과(CS)이거나 일반외과(GS)인 
+    의사의 이름, 의사ID, 진료과, 고용일자를 조회하는 SQL문을 작성해주세요. 
+    이때 결과는 고용일자를 기준으로 내림차순 정렬하고, 
+    고용일자가 같다면 이름을 기준으로 오름차순 정렬해주세요.
+*/
+SELECT
+    DR_NAME
+    ,DR_ID
+    ,MCDP_CD
+    ,TO_CHAR(HIRE_YMD,'YYYY-MM-DD')
+FROM DOCTOR
+WHERE MCDP_CD IN ('CS', 'GS')
+ORDER BY
+    HIRE_YMD DESC
+    , DR_NAME ASC
