@@ -323,3 +323,38 @@ WHERE MCDP_CD IN ('CS', 'GS')
 ORDER BY
     HIRE_YMD DESC
     , DR_NAME ASC
+    
+/*
+    상반기에 판매된 아이스크림의 맛을 총주문량을 기준으로 내림차순 정렬하고 
+    총주문량이 같다면 출하 번호를 기준으로 오름차순 정렬하여 조회하는 SQL 문을 작성해주세요.
+*/
+SELECT
+    FLAVOR
+FROM FIRST_HALF
+ORDER BY
+    TOTAL_ORDER DESC
+    , SHIPMENT_ID
+    
+/*
+    ONLINE_SALE 테이블에서 동일한 회원이 동일한 상품을 재구매한 데이터를 구하여,
+    재구매한 회원 ID와 재구매한 상품 ID를 출력하는 SQL문을 작성해주세요. 
+    결과는 회원 ID를 기준으로 오름차순 정렬해주시고 
+    회원 ID가 같다면 상품 ID를 기준으로 내림차순 정렬해주세요.
+*/
+SELECT
+    USER_ID
+    , PRODUCT_ID
+FROM ONLINE_SALE
+GROUP BY USER_ID, PRODUCT_ID
+HAVING SUM(USER_ID) > USER_ID
+ORDER BY USER_ID ASC, PRODUCT_ID DESC
+
+/*
+    동물 보호소에 들어온 모든 동물의 이름과 보호 시작일을 조회하는 SQL문을 작성해주세요. 
+    이때 결과는 ANIMAL_ID 역순으로 보여주세요. SQL을 실행하면 다음과 같이 출력되어야 합니다.
+*/
+SELECT
+    NAME
+    , DATETIME
+FROM ANIMAL_INS
+ORDER BY ANIMAL_ID DESC
