@@ -86,3 +86,18 @@ FROM
     ORDER BY AI.DATETIME ASC
     ) S
 WHERE ROWNUM < 4;
+
+-- 틀린답 (프로그래머스 질문란)
+SELECT NAME ,DATETIME
+  FROM (
+        SELECT M1.NAME, M1.DATETIME 
+          FROM ANIMAL_INS M1
+          LEFT JOIN ANIMAL_OUTS M2 ON M2.ANIMAL_ID = M1.ANIMAL_ID
+                                  AND M2.DATETIME IS NULL
+         ORDER BY M1.DATETIME  
+       )
+WHERE ROWNUM <= 3
+/*
+	LEFT JOIN은 OUTER JOIN 인데, 이는 합집합이므로, WHERE 조건 처럼 해당되는 값만 걸러주는 구문이 아니다.
+	따라서 JOIN 문에 AND 조건을 걸어주는게 아닌, WHERE 조건을 걸어주는게 맞다.
+*/
