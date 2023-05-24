@@ -101,3 +101,53 @@ WHERE ROWNUM <= 3
 	LEFT JOIN은 OUTER JOIN 인데, 이는 합집합이므로, WHERE 조건 처럼 해당되는 값만 걸러주는 구문이 아니다.
 	따라서 JOIN 문에 AND 조건을 걸어주는게 아닌, WHERE 조건을 걸어주는게 맞다.
 */
+
+/*
+    '경제' 카테고리에 속하는 도서들의 
+    도서 ID(BOOK_ID), 저자명(AUTHOR_NAME), 출판일(PUBLISHED_DATE) 리스트를 출력하는 SQL문을 작성해주세요.
+    결과는 출판일을 기준으로 오름차순 정렬해주세요.
+*/
+SELECT
+    B.BOOK_ID,	
+    A.AUTHOR_NAME,
+    TO_CHAR(B.PUBLISHED_DATE, 'YYYY-MM-DD')
+FROM BOOK B
+    LEFT JOIN AUTHOR A
+        ON A.AUTHOR_ID = B.AUTHOR_ID
+WHERE 1=1
+    AND B.CATEGORY = '경제'
+ORDER BY B.PUBLISHED_DATE ASC
+
+/*
+    천재지변으로 인해 일부 데이터가 유실되었습니다. 
+    입양을 간 기록은 있는데, 
+    보호소에 들어온 기록이 없는 동물의 
+    ID와 이름을 ID 순으로 조회하는 SQL문을 작성해주세요.
+*/
+SELECT
+    O.ANIMAL_ID
+    ,O.NAME
+FROM ANIMAL_OUTS O
+    LEFT JOIN ANIMAL_INS I
+        ON I.ANIMAL_ID = O.ANIMAL_ID
+WHERE 1=1
+    AND I.ANIMAL_ID IS NULL
+ORDER BY O.ANIMAL_ID ASC
+
+/*
+    보호소에서 중성화 수술을 거친 동물 정보를 알아보려 합니다. 
+    보호소에 들어올 당시에는 중성화1되지 않았지만,
+    보호소를 나갈 당시에는 중성화된 동물의 
+    아이디와 생물 종, 이름을 조회하는 아이디 순으로 조회하는 SQL 문을 작성해주세요.
+*/
+SELECT
+    I.ANIMAL_ID
+    ,I.ANIMAL_TYPE
+    , I.NAME
+FROM ANIMAL_INS I
+    LEFT JOIN ANIMAL_OUTS O
+        ON O.ANIMAL_ID = I.ANIMAL_ID
+WHERE 1=1
+    AND I.SEX_UPON_INTAKE LIKE 'Intact%'
+    AND O.SEX_UPON_OUTCOME NOT LIKE 'Intact%'
+ORDER BY I.ANIMAL_ID ASC
