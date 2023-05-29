@@ -204,3 +204,21 @@ USING (PRODUCT_ID)
 WHERE TO_CHAR(PRODUCE_DATE, 'MM') = '05'
 GROUP BY PRODUCT_ID, PRODUCT_NAME
 ORDER BY TOTAL_SALES DESC, PRODUCT_ID ASC;
+
+/*
+    7월 아이스크림 총 주문량과 상반기의 아이스크림 총 주문량을 더한 값이 큰 순서대로 
+    상위 3개의 맛을 조회하는 SQL 문을 작성해주세요.
+*/
+SELECT
+    C.FLAVOR
+FROM
+    (
+        SELECT
+            A.FLAVOR, SUM(A.TOTAL_ORDER + B.TOTAL_ORDER)
+        FROM FIRST_HALF A
+            LEFT JOIN JULY B
+                ON B.FLAVOR = A.FLAVOR
+        GROUP BY A.FLAVOR
+        ORDER BY SUM(A.TOTAL_ORDER + B.TOTAL_ORDER) DESC
+    ) C
+WHERE ROWNUM < 4
