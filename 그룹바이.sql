@@ -108,3 +108,16 @@ WHERE A.BOOK_ID=B.BOOK_ID
     AND EXTRACT(MONTH FROM SALES_DATE) = 1
 GROUP BY C.AUTHOR_ID,C.AUTHOR_NAME,B.CATEGORY 
 ORDER BY C.AUTHOR_ID ASC, B.CATEGORY DES
+
+/*
+CAR_RENTAL_COMPANY_CAR 테이블에서 '통풍시트', '열선시트', '가죽시트' 중 하나 이상의 옵션이 포함된 자동차가 자동차 종류 별로 몇 대인지 출력하는 SQL문을 작성해주세요. 이때 자동차 수에 대한 컬럼명은 CARS로 지정하고, 결과는 자동차 종류를 기준으로 오름차순 정렬해주세요.
+*/
+
+SELECT CAR_ID, CASE WHEN AP = 0 THEN '대여 가능' ELSE '대여중' END AS AVAILABILITY
+FROM (SELECT CAR_ID, 
+             SUM(CASE WHEN TO_DATE('2022-10-16', 'YYYY-MM-DD') 
+                 BETWEEN START_DATE AND END_DATE THEN 1 ELSE 0 END) AS AP
+        FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+        GROUP BY CAR_ID
+    )
+ORDER BY CAR_ID DESC;
