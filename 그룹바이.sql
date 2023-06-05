@@ -149,3 +149,17 @@ AND R.START_DATE BETWEEN TO_DATE('2022-08-01', 'YYYY-MM-DD') AND TO_DATE('2022-1
 GROUP BY EXTRACT(MONTH FROM R.START_DATE), R.CAR_ID
 HAVING COUNT(*) > 0
 ORDER BY EXTRACT(MONTH FROM R.START_DATE), R.CAR_ID DESC;
+
+/*
+    PRODUCT 테이블에서 만원 단위의 가격대 별로 상품 개수를 출력하는 SQL 문을 작성해주세요.
+    이때 컬럼명은 각각 컬럼명은 PRICE_GROUP, PRODUCTS로 지정해주시고 
+    가격대 정보는 각 구간의 최소금액(10,000원 이상 ~ 20,000 미만인 구간인 경우 10,000)으로 표시해주세요.
+    결과는 가격대를 기준으로 오름차순 정렬해주세요.
+*/
+SELECT
+    TRUNC(PRICE, -4) AS PRICE_GROUP, 
+    COUNT(PRODUCT_ID) AS PRODUCT
+FROM
+    PRODUCT
+GROUP BY TRUNC(PRICE, -4)
+ORDER BY TRUNC(PRICE, -4) ASC
